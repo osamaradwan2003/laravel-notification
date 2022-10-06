@@ -40,6 +40,11 @@ PUSHER_APP_SECRET=
 PUSHER_APP_CLUSTER=mt1
 ```
 - go to the app.blade.php file and add your PUSHER_APP_KEY
+
+- Add Your Slack WebHook 
+```
+SLACK_NOTIFICATION_WEBHOOK=
+```
 - run command
 ```shell
 php artisan migrate
