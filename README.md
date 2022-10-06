@@ -59,3 +59,5 @@ php artisan serve
 email: admin@admin.com
 password: admin
 ```
+
+##### Note: Notification Settings Workonly for admin user
