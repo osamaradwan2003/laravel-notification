@@ -60,4 +60,4 @@ email: admin@admin.com
 password: admin
 ```
 
-##### Note: Notification Settings Workonly for admin user
+###### *Note*: Notification Settings Workonly for admin user
