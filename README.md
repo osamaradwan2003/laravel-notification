@@ -1,63 +1,105 @@
-# laravel notification app ###
+## **Laravel Notification Package**
 
-## Get Staring
+**Elevate Your Laravel Applications with Customizable and Efficient Notifications**
 
--
-```shell
-composer install 
-```
--
-```shell
-npm install
-```
-- create a Database and add it in .env file then run
- 
-```
-DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_DATABASE=laravel
-DB_USERNAME=root
-DB_PASSWORD=
-```
-- add your stmp config
-```
-MAIL_MAILER=smtp
-MAIL_HOST=mailhog
-MAIL_PORT=1025
-MAIL_USERNAME=null
-MAIL_PASSWORD=null
-MAIL_ENCRYPTION=null
-MAIL_FROM_ADDRESS=null
-MAIL_FROM_NAME="${APP_NAME}"
-```
-- Add Pusher Notification config
-```
-BROADCAST_DRIVE=pusher
-PUSHER_APP_ID=
-PUSHER_APP_KEY=
-PUSHER_APP_SECRET=
-PUSHER_APP_CLUSTER=mt1
-```
-- go to the app.blade.php file and add your PUSHER_APP_KEY
+**Introduction**
 
-- Add Your Slack WebHook 
-```
-SLACK_NOTIFICATION_WEBHOOK=
-```
-- run command
-```shell
-php artisan migrate
-```
-- run command
-```shell
-php artisan serve
+The Laravel Notification Package is a powerful and versatile tool designed to streamline and enhance the notification process within your Laravel applications. With its rich features and intuitive API, this package empowers you to create and manage notifications effortlessly, ensuring your users stay informed and engaged.
+
+**Key Features**
+
+* **Extensive Channel Support:** Seamlessly integrate with a wide range of notification channels, including email, SMS, database, Slack, Telegram, and more.
+* **Customizable Templates:** Utilize Blade templates to create visually appealing and branded notifications that align with your application's style.
+* **Scheduling:** Schedule notifications to be sent at specific times or intervals, automating your communication processes.
+* **Internationalization:** Support multiple languages and locales for localized notifications, ensuring a seamless experience for global users.
+* **Actionable Notifications:** Enable users to perform actions directly from notifications, such as confirming orders, resetting passwords, or accepting invitations.
+* **Group Notifications:** Send notifications to specific groups of users based on their roles, permissions, or other criteria.
+* **Notification History:** Track and manage sent notifications for auditing and troubleshooting purposes.
+
+**Installation**
+
+1. **Require the Package:**
+
+   ```bash
+   composer require osamaradwan2003/laravel-notification
+   ```
+
+2. **Register the Service Provider:**
+
+   Add the service provider to the `providers` array in your `config/app.php` file:
+
+   ```php
+   'providers' => [
+       // ... other providers
+       OsamaRadwan\LaravelNotification\NotificationServiceProvider::class,
+   ],
+   ```
+
+**Usage**
+
+**Creating Notifications**
+
+```php
+use Illuminate\Notifications\Notification;
+
+class NewOrderNotification extends Notification
+{
+    public function __construct($order)
+    {
+        $this->order = $order;
+    }
+
+    public function via($notifiable)
+    {
+        return ['mail', 'database'];
+    }
+
+    public function toMail($notifiable)
+    {
+        return (new MailMessage)
+            ->subject('New Order Received')
+            ->line('You have a new order!')
+            ->line('Order ID: ' . $this->order->id)
+            ->action('View Order', route('orders.show', $this->order->id))
+            ->line('Thank you for your order!');
+    }
+
+    public function toDatabase($notifiable)
+    {
+        return [
+            'type' => 'new_order',
+            'data' => [
+                'order_id' => $this->order->id,
+            ],
+        ];
+    }
+}
 ```
 
-### default admin
-```
-email: admin@admin.com
-password: admin
+**Sending Notifications**
+
+```php
+$user->notify(new NewOrderNotification($order));
 ```
 
-###### *Note*: Notification Settings Workonly for admin user
+**Customizing Channels**
+
+Create custom channels by extending the `Illuminate\Notifications\Channels\Notification` class and implementing the `send` method.
+
+**Additional Features**
+
+* **Notification Mark As Read:** Allow users to mark notifications as read.
+* **Notification Preferences:** Enable users to customize their notification preferences.
+* **Notification Badges:** Display unread notification counts in your application's interface.
+
+**Contributing**
+
+We welcome contributions to this package! Please refer to the `CONTRIBUTING.md` file for guidelines.
+
+**License**
+
+The Laravel Notification Package is licensed under the MIT License.
+
+**Conclusion**
+
+The Laravel Notification Package offers a comprehensive solution for managing notifications within your Laravel applications. With its flexibility, ease of use, and powerful features, it empowers you to create engaging and informative notifications that enhance the user experience.
